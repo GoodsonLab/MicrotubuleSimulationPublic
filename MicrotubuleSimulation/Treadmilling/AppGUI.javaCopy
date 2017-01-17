@@ -1,0 +1,186 @@
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JMenuBar;
+import java.io.File;
+
+public class AppGUI extends JFrame{
+
+    // member for GUI
+    private JMenu fileMenu;
+    private JMenu displayMenu;
+    private JMenu analyzeMenu;
+    private JMenuBar bar;
+
+    private JTextArea textArea;
+    private JScrollPane scrollPane;
+
+    // member for model
+    private File fileName;
+    private Simulation sim;
+    private boolean opened; // input file open mode
+    private boolean run_;   // if simulation runs correctly
+
+    public AppGUI(){
+	super("MT TreadMilling");
+
+	bar = new JMenuBar(); // Add the Menu Bar on top of the GUI
+	setJMenuBar(bar);
+	
+	// Add File Menu into Menu Bar
+	fileMenu = new JMenu("File");
+	fileMenu.setMnemonic('F');
+	JMenuItem openItem = new JMenuItem("Open");
+	JMenuItem saveItem = new JMenuItem("Save");
+	JMenuItem exitItem = new JMenuItem("Exit");
+	fileMenu.add(openItem);
+	fileMenu.add(saveItem);
+	fileMenu.add(exitItem);
+
+	// Add Analyze Menu into Menu Bar
+	analyzeMenu = new JMenu("Simulation");
+	analyzeMenu.setMnemonic('S');
+	JMenuItem componentItem = new JMenuItem("Run");
+	analyzeMenu.add(componentItem);
+
+	// Add Display Menu into Menu bar
+	displayMenu = new JMenu("Display");
+	displayMenu.setMnemonic('D');
+	JMenuItem displayItem = new JMenuItem("Play");
+	displayMenu.add(displayItem);
+
+	bar.add(fileMenu);
+	bar.add(analyzeMenu);
+	bar.add(displayMenu);
+
+	// Basic GUI setup
+	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	setSize(1000, 500);
+	setVisible(true);
+
+	// Add Handlers for each Menu Item
+	OpenHandler openHandler = new OpenHandler();
+	openItem.addActionListener(openHandler);
+	ExitHandler exitHandler = new ExitHandler();
+	exitItem.addActionListener(exitHandler);
+
+	ComponentHandler componentHandler = new ComponentHandler();
+	componentItem.addActionListener(componentHandler);
+
+	DisplayHandler displayHandler = new DisplayHandler();
+	displayItem.addActionListener(displayHandler);
+
+
+	// Add and set the Text Area to store the log
+	textArea = new JTextArea();
+
+	textArea.setEditable(false); // set not editable
+	textArea.setBackground(Color.WHITE); // background white
+	textArea.setForeground(Color.BLUE); // foreground blue
+	textArea.setFont(new Font("Times", Font.BOLD, 20));
+
+	// welcome message
+	textArea.append("*** Welcome to MT treadmilling simulation application! ***\n");
+	textArea.append("    1. Use File menu bar to select input file\n");
+	textArea.append("    2. Use Simulation menu to run the simulation\n");
+	textArea.append("    3. Use display menu to play the saved frames\n");
+	textArea.append("    Credits: Chunlei Li, Holly Goodson, Mark Abler, University of Notre Dame\n");
+	textArea.append("*****************************************************************************\n");
+	textArea.append("*****************************************************************************\n");
+
+	scrollPane = new JScrollPane(textArea);
+	add(scrollPane, BorderLayout.CENTER);
+	validate();
+
+        // Initially File is not open
+	opened = false;
+	run_ = false;
+    }
+
+    // file chooser handler
+    private class OpenHandler implements ActionListener{
+	
+	public void actionPerformed(ActionEvent event){
+	    opened = false;
+            fileName = null;
+
+	    JFileChooser fileChooser = new JFileChooser();
+	    fileChooser.showOpenDialog(AppGUI.this);
+	    fileName = fileChooser.getSelectedFile();
+	    
+	    if ( fileName.exists()){
+		textArea.append("   "+fileName.getName()+" is opened.\n");
+		opened = true;
+	    }else{
+		textArea.setForeground(Color.RED); 
+		textArea.append("   "+fileName.getName()+" cannot be opened!!!\n");
+	    }
+	}
+    }
+
+    private class ExitHandler implements ActionListener{
+
+	public void actionPerformed(ActionEvent event){
+	    System.exit(0);
+	}
+    }
+
+    // run simulation
+    private class ComponentHandler implements ActionListener{
+
+	public void actionPerformed(ActionEvent event){
+	    run_ = false; // before simulation
+	    if (opened){ // Only analyze when input success
+
+		sim = new Simulation();
+		sim.setPath(fileName.getParent());
+		sim.readConfig(fileName.getAbsolutePath());
+		sim.run();
+
+		textArea.append("*** Simulation ("+fileName.getName()+") completes ***\n");
+		run_ = true; // after simulation correctly runs
+	    }else{
+		textArea.setForeground(Color.RED); 
+		textArea.append("!!! No input file !!!\n");
+	    }
+	}
+    }
+
+    // display handler
+    private class DisplayHandler implements ActionListener{
+
+	public void actionPerformed(ActionEvent event){
+
+	    if(run_){
+		JFrame displayFrame = new JFrame("movie");
+		displayFrame.setSize(1000, 500);
+		displayFrame.setVisible(true);
+                displayFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
+		int nf = sim.getNFrames();
+		Animation animation = new Animation(nf, fileName.getParent());
+
+		JScrollPane dscrollPane = new JScrollPane(animation);
+		displayFrame.add(dscrollPane, BorderLayout.CENTER);
+		animation.startAnimation();
+	    }else{
+		textArea.setForeground(Color.RED); 
+		textArea.append("!!! No complete simulation. Run simulation first !!!\n");
+	    }
+	}
+    }
+
+
+}
+

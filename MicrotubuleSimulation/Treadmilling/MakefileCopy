@@ -1,0 +1,23 @@
+JFLAGS = -g
+JC = javac
+.SUFFIXES: .java .class
+.java.class:
+	$(JC) $(JFLAGS) $*.java
+
+CLASSES = \
+	Dimer.java \
+	PF.java \
+	DrawMT.java \
+	Simulation.java \
+	Animation.java \
+	AppGUI.java \
+	Main.java
+
+default: classes
+
+classes: $(CLASSES:.java=.class)
+
+clean:
+	$(RM) *.class
+
+

@@ -1,0 +1,19 @@
+### This is the input file for treadmilling simulation.
+
+mts     100     ### number of mt
+steps   100000  ### number of steps
+freq    10      ### every 10 steps output length
+frames  10      ### number of frames to store
+volume  200     ### volume in um^3
+compete 0       ### compete for tubulin - 1, o.w. - 0
+conc    10      ### concentration of free tubulin
+halfMax 200     ### concentration of half max growth
+kon     250     ### plus end kon
+kon_    10      ### minus end kon
+koffT   0.02    ### plus end GTP koff
+koffD   5       ### plus end GDP koff
+koffT_  0.02    ### minus end GTP koff
+koffD_  10      ### minus end GDP koff
+kh      0.7     ### kh
+
+

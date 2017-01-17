@@ -1,0 +1,43 @@
+package treadmilling;
+
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.Graphics;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+import java.io.File;
+import javax.imageio.ImageIO;
+import java.io.IOException;
+import java.awt.image.BufferedImage;
+
+public class ShowPlot extends JPanel {
+
+    private ImageIcon image;
+    private int width;
+    private int height;
+    private String parentPath;
+
+    public ShowPlot(final String p){
+
+        BufferedImage bi = null;
+        parentPath = p;
+        try{
+            bi = ImageIO.read(new File(parentPath));
+	    image = new ImageIcon(bi);
+        }catch (IOException e){}
+
+
+	width = image.getIconWidth();
+	height = image.getIconHeight();
+	setPreferredSize(new Dimension(width, height));
+    }
+
+    public void paintComponent(Graphics g){
+	super.paintComponent(g);
+
+	image.paintIcon(this, g, 0, 0);
+    }
+
+}
