@@ -1,0 +1,124 @@
+### This is the input file for treadmilling simulation.
+
+
+
+maxMTs  100   ### max number of mts allowed in the system
+
+mts     100     ### number of mt
+
+simT   400   ### simulation time in seconds
+
+freq    1      ### every X seconds output length
+
+movieS  0      ### start time of movie in seconds
+
+movieFreq  0      ### frequency of movie frame in seconds, 0 - no movie
+
+movieE  300     ### end time of movie in seconds
+
+
+
+movieConc 6.5 ### concentration that you want to run in simulation
+
+volume  500     ### volume in um^3 (10^-18 m^3)
+
+compete 1       ### compete for tubulin - 1, o.w. - 0
+
+seed    765       ### random number seed
+
+conc     1    ### concentration of free tubulin
+
+halfMax 200     ### concentration of half max growth
+
+
+kh        1    ### hydrolysis rate
+
+kht      0    ### hydrolysis rate of the tip
+
+
+kToffT 0.1 ### plus end koff when GTP leaves GTP
+
+
+kToffD 0.1 ### plus end koff when GTP leaves GDP 
+
+
+kDoffT 48 ### plus end koff when GDP leaves GTP 
+
+
+kDoffD 48 ### plus end koff when GDP leaves GDP 
+
+
+kToffT_ 0 ### minus end koff when GTP leaves GTP
+
+
+kToffD_ 0 ### minus end koff when GTP leaves GDP 
+
+
+kDoffT_ 0 ### minus end koff when GDP leaves GTP 
+
+kDoffD_ 0 ### minus end koff when GDP leaves GDP 
+
+
+
+
+ke 0 ### nucleotide exchage rate
+
+
+
+
+
+kTonT 2 ### GTP from solution onto protofilament with GTP tip
+
+
+kDonT 0 ### GDP from solution onto protofilament with GTP tip
+
+
+kTonD 0.1  ### GTP from solution onto protofilament with GDP tip
+
+
+kDonD 0 ### GDP from solution onto protofilament with GDP tip
+
+
+kTonT_ 0 ### GTP from solution onto protofilament with GTP tip on minus end
+
+
+kDonT_ 0 ### GDP from solution onto protofilament with GTP tip on minus end
+
+
+kTonD_ 0 ### GTP from solution onto protofilament with GDP tip on minus end
+
+
+kDonD_ 0 ### GDP from solution onto to protofilament with GDP tip on minus end
+
+
+
+TT 10000000000000  ### Tubulin Turnover
+
+
+
+
+
+
+
+dilute 0           ### 1-allow dilution 0-no dilution
+
+diluteTime  300      ### time in sec from start of simulation
+
+diluteConc   0    ### dilution concentration
+
+
+
+increaseConc 1 ### the amount the conntration is increased by each time
+
+
+simNumber 10 ### number of times the concetration is increased
+
+
+
+nucleation 1    ### 1-allow nucleation 0-no nucleation
+
+power   1      ### [Tu]^power for nucleation
+
+kNuc    390000      ### nucleation rate, 1/[average nucleation time]
+
+
